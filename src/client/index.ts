@@ -1,5 +1,6 @@
-import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'
+import type { Context as ClientContext } from '@deepseek-ai/cordis'
 import type { IConversation } from '@deepseek-ai/dsh-client-ui-conversation/client'
+import type {} from '@deepseek-ai/dsh-client-ui-session/client'
 import { choosePath } from './chooser.ts'
 import { droppedItems } from './drop-items.ts'
 import { locateDroppedDirectory, locateDroppedFile } from './locator.ts'
@@ -9,7 +10,7 @@ import { createFileDropToast, type FileDropToast } from './toast.ts'
 
 export { pathsFromDrop, pathsFromUriList } from './paths.ts'
 
-export const inject = ['sessions', 'workspaces', 'conversation']
+export const inject = ['sessions', 'workspaces', 'conversation', 'uiSession']
 
 const OVERLAY_ID = 'dsh-file-drop-overlay'
 
@@ -73,8 +74,20 @@ function hasFilePayload(event: DragEvent): boolean {
 
 type SessionInput = ReturnType<IConversation['input']['for']>
 
+type SessionId = Parameters<ClientContext['sessions']['scope']>[0]
+
+/**
+ * The Session the Conversation area is showing, as projected by the Session UI
+ * adapter. `sessions.list` stopped carrying a `current` field in DSH 0.2.1;
+ * `uiSession.adapter.current` is the adapter the renderer itself consumes, and
+ * its key is the Session id (absent while no Session is selected).
+ */
+function currentSessionId(ctx: ClientContext): SessionId | undefined {
+  return ctx.uiSession.adapter.current.getSnapshot().key as SessionId | undefined
+}
+
 function currentInput(ctx: ClientContext): SessionInput | undefined {
-  const sessionId = ctx.sessions.list.getSnapshot().current
+  const sessionId = currentSessionId(ctx)
   if (sessionId === undefined) return undefined
   const scope = ctx.sessions.scope(sessionId)
   const conversation = ctx.get('conversation')
@@ -82,7 +95,7 @@ function currentInput(ctx: ClientContext): SessionInput | undefined {
 }
 
 function currentWorkspacePath(ctx: ClientContext): string | undefined {
-  const sessionId = ctx.sessions.list.getSnapshot().current
+  const sessionId = currentSessionId(ctx)
   return sessionId === undefined ? undefined : ctx.sessions.list.getSnapshot().byId[sessionId]?.cwd
 }
 

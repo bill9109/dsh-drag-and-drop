@@ -1,4 +1,4 @@
-import type { IWorkspaces } from '@deepseek-ai/dsh-client-runtime/client'
+import type { IWorkspaces } from '@deepseek-ai/dsh-api-workspace-controller/client'
 import { FILE_DROP_ROUTE, type LocateRequest, type LocateResponse } from '../protocol.ts'
 import { readDirectoryContentSamples, readDirectoryStructure, type DroppedDirectory } from './directory.ts'
 import { droppedFileMeta, fullFingerprint, sampleFingerprint } from './fingerprint.ts'

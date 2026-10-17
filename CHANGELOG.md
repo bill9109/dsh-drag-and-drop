@@ -2,6 +2,17 @@
 
 All notable user-facing changes to dsh-drag-and-drop are documented in this file. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and uses semantic version tags.
 
+## [0.1.7] - 2026-10-17
+
+### Fixed
+
+- DSH 0.2.1: the current Session is read from `uiSession.adapter.current` instead of the removed `sessions.list.current` field, so dropping a file while a Session is open resolves the right conversation input and workspace again.
+- DSH 0.2.1: the Web client now injects `@deepseek-ai/dsh-client-ui-session`; the retired `@deepseek-ai/dsh-client-runtime` package is no longer referenced by the bundle manifest or the type edges.
+
+### Changed
+
+- Build: the shared `clientBundle` preset is called with the package directory (its 0.2.1 contract) instead of the package name, and `scripts/build.mjs` mirrors the checkout's non-hoisted workspace packages into a private `node_modules` of symlinks instead of linking a hand-kept package list.
+
 ## [0.1.6] - 2026-08-21
 
 ### Fixed

@@ -1,6 +1,6 @@
 {
   "name": "dsh-drag-and-drop",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Drag local files into the DSH Web UI and insert their original filesystem paths without uploading or copying them",
   "keywords": [
     "deepseek",
@@ -63,8 +63,8 @@
     "client": {
       "platform": "web",
       "inject": [
-        "@deepseek-ai/dsh-client-runtime",
-        "@deepseek-ai/dsh-client-ui-conversation"
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-session"
       ]
     }
   }
